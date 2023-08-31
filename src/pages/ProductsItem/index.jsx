@@ -22,7 +22,7 @@ const index = () => {
 
     if (load) {
         return <div className="w-screen h-screen bg-slate-100 fixed z-50 top-0 left-0 flex items-center justify-center">
-            <div class="spinner">
+            <div className="spinner">
                 <div></div>
                 <div></div>
                 <div></div>
