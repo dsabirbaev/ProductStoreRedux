@@ -1,22 +1,27 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import productAPI from "../../service/product";
 import "./style.scss";
 import { Button } from "flowbite-react";
+import { useDispatch, useSelector } from "react-redux";
+
+import { SET_PRODUCT, SET_LOAD, SET_ERROR_PRODUCT } from "../../redux/action/actions";
 const index = () => {
 
-    const [state, setState] = useState([]);
-    const [load, setLoad] = useState(true);
+    const {product, load} = useSelector((data) => data);
+    const dispatch = useDispatch();
 
     const { id } = useParams();
     const navigate = useNavigate();
 
     useEffect(() => {
         productAPI.getProductItem(id).then((response) => {
-            setState(response.data);
-            setLoad(false);
+
+            dispatch(SET_PRODUCT(response.data));
+            dispatch(SET_LOAD());
+
         }).catch((err) => {
-            console.log(err.message);
+            dispatch(SET_ERROR_PRODUCT(err.message));
         })
     }, [])
 
@@ -43,13 +48,13 @@ const index = () => {
                     <Button onClick={() => navigate(-1)} className="mb-5">Back</Button>
 
                     <div className="flex gap-x-5">
-                        <img src={state?.image} alt="image" className="w-[300px] h-[200px] object-contain object-center" />
+                        <img src={product?.image} alt="image" className="w-[300px] h-[200px] object-contain object-center" />
                         <div className="flex flex-col gap-y-4 text-[18px] border-[2px] border-sky-500 rounded-2xl p-4">
-                            <h2 className="font-medium text-[25px]">{state?.title}</h2>
-                            <p><span className="font-bold">Category: </span> {state?.category}</p>
-                            <p>{state?.description}</p>
-                            <p><span className="font-bold">Price: </span>$ {state?.price}</p>
-                            <p><span className="font-bold">Rate:</span> {state?.rating?.rate}</p>
+                            <h2 className="font-medium text-[25px]">{product?.title}</h2>
+                            <p><span className="font-bold">Category: </span> {product?.category}</p>
+                            <p>{product?.description}</p>
+                            <p><span className="font-bold">Price: </span>$ {product?.price}</p>
+                            <p><span className="font-bold">Rate:</span> {product?.rating?.rate}</p>
                         </div>
                     </div>
                 </div>

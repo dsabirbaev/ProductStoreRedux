@@ -1,5 +1,5 @@
 
-import { useEffect, useState, useReducer } from "react";
+import { useEffect} from "react";
 
 import "./style.scss";
 
